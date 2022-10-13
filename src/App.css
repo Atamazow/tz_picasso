@@ -1,5 +1,5 @@
 body {
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
 }
 
 .content {
@@ -34,6 +34,12 @@ body {
   height: auto;
 }
 
+.autocomplete-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 330px
+}
+
 .autocomplete_value {
   padding: 16px;
   align-items: center;
@@ -47,12 +53,18 @@ body {
   margin-top: 0px;
 }
 
+.autocomplete_default_value img {
+  margin-top: 30px;
+  width: 20px;
+}
+
 .autocomplete_name {
   margin-left: 20px;
 }
 
-.autocomplete_data {
-
+.autocomplete_default_data {
+  text-align: center;
+  margin-right: 20px;
 }
 
 .autocomplete_value img {
@@ -60,7 +72,7 @@ body {
 }
 
 .autocomplete_value:hover {
-  background: #E5E5E5;
+  background: #e5e5e5;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 }

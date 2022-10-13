@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Autocomplete from "./Autocomplete";
 import axios from "axios";
+import AutoComplete from "./AutoComplete";
 
 function Search(props) {
   const [countries, setCountries] = useState([]);
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(true);
-  const getCountries = () => {
+
+  useEffect(() => {
     axios
       .get(
         "https://autocomplete.clearbit.com/v1/companies/suggest?query=segment"
@@ -17,17 +18,17 @@ function Search(props) {
       .catch((error) => {
         console.log(error);
       });
-  };
-  useEffect(() => {
-    getCountries();
   }, []);
 
-  const filteredCompany = countries.filter((country) => {
-    return country.name.toLowerCase().includes(value.toLowerCase()) || country.domain.toLowerCase().includes(value.toLowerCase());
+  const filteredCompanies = countries.filter((country) => {
+    return (
+      country.name.toLowerCase().includes(value.toLowerCase()) ||
+      country.domain.toLowerCase().includes(value.toLowerCase())
+    );
   });
 
-    const companyClickHandler = (id) => {
-    setValue(filteredCompany.find((item, index) => index === id).name);
+  const companyClickHandler = (id) => {
+    setValue(filteredCompanies.find((item, index) => index === id).name);
     setIsOpen(!isOpen);
   };
 
@@ -47,8 +48,8 @@ function Search(props) {
         />
       </form>
       <ul className="autocomplete">
-        {isOpen
-          ? filteredCompany.map((data,index) => {
+         { value && isOpen
+          && filteredCompanies.map((data, index) => {
               return (
                 <li
                   onClick={() => companyClickHandler(index)}
@@ -56,15 +57,15 @@ function Search(props) {
                   key={index}
                 >
                   <img src={data.logo} />
-                  <div className="autocomplete_data">
+                  <div className="autocomplete_search">
                     <div className="autocomplete_name">{data.name}</div>
                     <span className="autocomplete_domain">{data.domain}</span>
                   </div>
                 </li>
               );
-            })
-          : null}
+            })}
       </ul>
+      <AutoComplete filteredCompanies={filteredCompanies} />
     </div>
   );
 }
