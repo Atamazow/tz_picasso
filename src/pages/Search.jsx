@@ -23,13 +23,16 @@ function Search(props) {
   }, []);
 
   const filterCompany = countries.filter((country) => {
-    return country.name.toLowerCase().includes(value.toLowerCase());
+    if (country.name.toLowerCase().includes(value.toLowerCase())) {
+      return country.name
+    } if (country.domain.toLowerCase().includes(value.toLowerCase())) {
+      return country.domain
+    }
   });
 
-    const companyClickHandler = (event) => {
-    setValue(event.target.textContent);
+    const companyClickHandler = (id) => {
+    setValue(filterCompany.find((item, index) => index === id).name);
     setIsOpen(!isOpen);
-    console.log(setValue(event.target.textContent), 'console')
   };
 
   const inputIsOpenClick = () => {
@@ -48,23 +51,7 @@ function Search(props) {
         />
       </form>
       <ul className="autocomplete">
-        {isOpen
-          ? filterCompany.map((data,index) => {
-              return (
-                <li
-                  onClick={companyClickHandler}
-                  className="autocomplete_value"
-                  key={index}
-                >
-                  <img src={data.logo} />
-                  <div className="autocomplete_data">
-                    <div className="autocomplete_name">{data.name}</div>
-                    <span className="autocomplete_domain">{data.domain}</span>
-                  </div>
-                </li>
-              );
-            })
-          : null}
+        <Autocomplete isOpen={isOpen} companyClickHandler={companyClickHandler} filterCompany={filterCompany}/>
       </ul>
     </div>
   );
